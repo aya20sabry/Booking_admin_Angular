@@ -1,1 +1,22 @@
-<p>users-list-control works!</p>
+<div class="users-list-container">
+    <h2>Users List</h2>
+    <div class="user-cards">
+      <div *ngFor="let user of users" class="user-card">
+        <img [src]="user.imageUrl" [alt]="user.name" class="user-image">
+        <div class="user-details">
+          <h3>{{ user.name }}</h3>
+          <p>Age: {{ user.age }}</p>
+          <p>Job: {{ user.job }}</p>
+          <p>Properties: {{ user.propertiesCount }} ({{ user.propertyTypes }})</p>
+          <p>Total Rating: {{ user.totalRating | number:'1.1-1' }}</p>
+        </div>
+        <div class="user-actions">
+          <button (click)="deleteUser(user.id)" class="btn btn-danger">Delete</button>
+          <button (click)="blockUser(user.id)" class="btn btn-warning">Block</button>
+          <button (click)="toggleFavorite(user.id)" class="btn btn-favorite" [class.active]="user.isFavorite">
+            <i class="fas fa-heart"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
