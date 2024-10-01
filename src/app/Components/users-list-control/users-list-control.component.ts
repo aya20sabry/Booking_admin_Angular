@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../../services/user.service';
 
 interface User {
   id: number;
   name: string;
   age: number;
   job: string;
+  description: string;
+  rating: number;
   imageUrl: string;
-  propertiesCount: number;
-  propertyTypes: string;
-  totalRating: number;
-  isFavorite: boolean;
+  isOwner: boolean;
+  propertiesCount?: number;
+  bookingsCount?: number;
+  isBlocked?: boolean;
 }
 
 @Component({
@@ -19,199 +22,79 @@ interface User {
 })
 export class UsersListControlComponent implements OnInit {
   users: User[] = [];
+  paginatedUsers: User[] = [];
+  currentPage = 1;
+  pageSize = 10;
+  totalPages = 1;
 
-  constructor() { }
+  constructor(private userService: UserService) {}
 
-  ngOnInit(): void {
-    // Fetch users data from an API or service
-    this.fetchUsers();
+  ngOnInit() {
+    this.loadUsers();
   }
 
-  fetchUsers(): void {
-    // TODO: Replace this with actual API call
-    this.users = [
-      {
-        id: 1,
-        name: 'John Doe',
-        age: 35,
-        job: 'Software Engineer',
-        imageUrl: 'https://randomuser.me/api/portraits/men/1.jpg',
-        propertiesCount: 2,
-        propertyTypes: '1 Hotel, 1 Apartment',
-        totalRating: 4.5,
-        isFavorite: false
+  loadUsers() {
+    this.userService.getUsers().subscribe(
+      (users: User[]) => {
+        this.users = users;
+        this.totalPages = Math.ceil(this.users.length / this.pageSize);
+        this.updatePaginatedUsers();
       },
-      {
-        id: 2,
-        name: 'Jane Smith',
-        age: 28,
-        job: 'Marketing Manager',
-        imageUrl: 'https://randomuser.me/api/portraits/women/2.jpg',
-        propertiesCount: 1,
-        propertyTypes: '1 Apartment',
-        totalRating: 4.2,
-        isFavorite: true
-      },
-      {
-        id: 3,
-        name: 'Mike Johnson',
-        age: 42,
-        job: 'Real Estate Agent',
-        imageUrl: 'https://randomuser.me/api/portraits/men/3.jpg',
-        propertiesCount: 5,
-        propertyTypes: '2 Hotels, 3 Apartments',
-        totalRating: 4.8,
-        isFavorite: false
-      },
-      {
-        id: 4,
-        name: 'Emily Brown',
-        age: 31,
-        job: 'Architect',
-        imageUrl: 'https://randomuser.me/api/portraits/women/4.jpg',
-        propertiesCount: 3,
-        propertyTypes: '1 Hotel, 2 Apartments',
-        totalRating: 4.6,
-        isFavorite: true
-      },
-      {
-        id: 5,
-        name: 'David Lee',
-        age: 39,
-        job: 'Business Consultant',
-        imageUrl: 'https://randomuser.me/api/portraits/men/5.jpg',
-        propertiesCount: 2,
-        propertyTypes: '2 Hotels',
-        totalRating: 4.3,
-        isFavorite: false
-      },
-      {
-        id: 6,
-        name: 'Sarah Wilson',
-        age: 33,
-        job: 'Interior Designer',
-        imageUrl: 'https://randomuser.me/api/portraits/women/6.jpg',
-        propertiesCount: 4,
-        propertyTypes: '1 Hotel, 3 Apartments',
-        totalRating: 4.7,
-        isFavorite: true
-      },
-      {
-        id: 7,
-        name: 'Tom Anderson',
-        age: 45,
-        job: 'Property Manager',
-        imageUrl: 'https://randomuser.me/api/portraits/men/7.jpg',
-        propertiesCount: 6,
-        propertyTypes: '3 Hotels, 3 Apartments',
-        totalRating: 4.9,
-        isFavorite: false
-      },
-      {
-        id: 8,
-        name: 'Lisa Chen',
-        age: 29,
-        job: 'Financial Analyst',
-        imageUrl: 'https://randomuser.me/api/portraits/women/8.jpg',
-        propertiesCount: 1,
-        propertyTypes: '1 Apartment',
-        totalRating: 4.0,
-        isFavorite: true
-      },
-      {
-        id: 9,
-        name: 'Robert Taylor',
-        age: 37,
-        job: 'Hotel Manager',
-        imageUrl: 'https://randomuser.me/api/portraits/men/9.jpg',
-        propertiesCount: 3,
-        propertyTypes: '2 Hotels, 1 Apartment',
-        totalRating: 4.6,
-        isFavorite: false
-      },
-      {
-        id: 10,
-        name: 'Emma Davis',
-        age: 26,
-        job: 'Travel Blogger',
-        imageUrl: 'https://randomuser.me/api/portraits/women/10.jpg',
-        propertiesCount: 2,
-        propertyTypes: '2 Apartments',
-        totalRating: 4.4,
-        isFavorite: true
-      },
-      {
-        id: 11,
-        name: 'Chris Martin',
-        age: 41,
-        job: 'Entrepreneur',
-        imageUrl: 'https://randomuser.me/api/portraits/men/11.jpg',
-        propertiesCount: 4,
-        propertyTypes: '1 Hotel, 3 Apartments',
-        totalRating: 4.7,
-        isFavorite: false
-      },
-      {
-        id: 12,
-        name: 'Olivia White',
-        age: 32,
-        job: 'Event Planner',
-        imageUrl: 'https://randomuser.me/api/portraits/women/12.jpg',
-        propertiesCount: 2,
-        propertyTypes: '2 Hotels',
-        totalRating: 4.5,
-        isFavorite: true
-      },
-      {
-        id: 13,
-        name: 'Daniel Kim',
-        age: 36,
-        job: 'Photographer',
-        imageUrl: 'https://randomuser.me/api/portraits/men/13.jpg',
-        propertiesCount: 1,
-        propertyTypes: '1 Apartment',
-        totalRating: 4.2,
-        isFavorite: false
-      },
-      {
-        id: 14,
-        name: 'Sophie Turner',
-        age: 30,
-        job: 'Yoga Instructor',
-        imageUrl: 'https://randomuser.me/api/portraits/women/14.jpg',
-        propertiesCount: 2,
-        propertyTypes: '1 Hotel, 1 Apartment',
-        totalRating: 4.8,
-        isFavorite: true
-      },
-      {
-        id: 15,
-        name: 'Alex Rodriguez',
-        age: 38,
-        job: 'Investment Banker',
-        imageUrl: 'https://randomuser.me/api/portraits/men/15.jpg',
-        propertiesCount: 3,
-        propertyTypes: '1 Hotel, 2 Apartments',
-        totalRating: 4.6,
-        isFavorite: false
+      (error) => {
+        console.error('Error loading users:', error);
       }
-    ];
-  }
-  deleteUser(userId: number): void {
-    // TODO: Implement delete user functionality
-    console.log(`Delete user with ID: ${userId}`);
+    );
   }
 
-  blockUser(userId: number): void {
-    // TODO: Implement block user functionality
-    console.log(`Block user with ID: ${userId}`);
+  updatePaginatedUsers() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedUsers = this.users.slice(startIndex, endIndex);
   }
 
-  toggleFavorite(userId: number): void {
-    const user = this.users.find(u => u.id === userId);
-    if (user) {
-      user.isFavorite = !user.isFavorite;
-      // TODO: Update favorite status on the server
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePaginatedUsers();
     }
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updatePaginatedUsers();
+    }
+  }
+
+  blockUser(userId: number) {
+    this.userService.blockUser(userId).subscribe(
+      () => {
+        console.log(`User ${userId} blocked successfully`);
+        // Update the user's status in the local array
+        const userIndex = this.users.findIndex(user => user.id === userId);
+        if (userIndex !== -1) {
+          this.users[userIndex].isBlocked = true;
+          this.updatePaginatedUsers();
+        }
+      },
+      (error) => {
+        console.error(`Error blocking user ${userId}:`, error);
+      }
+    );
+  }
+
+  deleteUser(userId: number) {
+    this.userService.deleteUser(userId).subscribe(
+      () => {
+        console.log(`User ${userId} deleted successfully`);
+        // Remove the user from the local array
+        this.users = this.users.filter(user => user.id !== userId);
+        this.totalPages = Math.ceil(this.users.length / this.pageSize);
+        this.updatePaginatedUsers();
+      },
+      (error) => {
+        console.error(`Error deleting user ${userId}:`, error);
+      }
+    );
   }
 }
