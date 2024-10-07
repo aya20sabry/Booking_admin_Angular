@@ -1,13 +1,27 @@
 <div class='row '>
   @for(onehost of Host ;track onehost.id){
-    <div class="card col-6 m-4" style="width: 18rem;">
-      <img [src]="onehost.images" class="card-img-top">
-      <div class="card-body">
-        <h5 class="card-title">{{onehost.name.en}}</h5>
-        <!-- <p class="card-text">{{}}</p> -->
-        <button onclick="deleteHost(id)">Details</button>
+    @if (onehost.approved==false) {
+      <div class="card col-6 m-4" style="width: 18rem;">
+
+        <img [src]="onehost.images" class="card-img-top">
+        <div class="card-body">
+
+          <h5 class="card-title">{{onehost.name.en}}</h5>
+          <a
+          class="nav-link  rounded-start-5 ps-4 mb-2"
+          routerLink="/approved-list/details/:id"
+          routerLinkActive="active"
+          [queryParams]="{ id: onehost._id }"
+        ><p> Details</p>
+        </a>
+          <!-- <button [routerLink]="['/details', onehost._id]"> Details</button> -->
+        </div>
       </div>
-    </div>
+    }
+
+
+
   }
+
 
 </div>

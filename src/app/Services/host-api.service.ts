@@ -12,8 +12,16 @@ export class HostApiService {
   getAllHosts():Observable<Host[]>{
     return this.httpclient.get<Host[]>('http://localhost:3000/host')
   }
-  deleteHost(id:number): Observable<any>{
+  deleteHost(id:String): Observable<any>{
     return this.httpclient.delete(`http://localhost:3000/host/${id}`)
+  }
+  updateHostApproval(id: string, approved: boolean): Observable<any> {
+    return this.httpclient.patch(`http://localhost:3000/host/${id}`, { approved });
+  }
+
+
+  getvisitors():Observable<Host[]>{
+    return this.httpclient.get<Host[]>('http://localhost:3000/visitor')
   }
 
 }

@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { DashboardComponent } from './Components/dashboard/dashboard.component';
 import { ApprovedListComponent } from './Components/approved-list/approved-list.component';
 import { ApartmentListComponent } from './Components/apartment-list/apartment-list.component';
-import { VisitorsChartComponent } from './Components/visitors-chart/visitors-chart.component';
+import { VisitorChartComponent } from './Components/visitors-chart/visitors-chart.component';
 import { UsersListControlComponent } from './Components/users-list-control/users-list-control.component';
 import { LoginComponent } from './Components/login/login.component';
 import { EarningChartComponent } from './Components/earning-chart/earning-chart.component';
@@ -17,8 +17,8 @@ export const routes: Routes = [
   { path: 'earning-chart', component: EarningChartComponent },
   { path: 'hotels-list', component: HotelsListComponent },
   { path: 'users-list-control', component: UsersListControlComponent },
-  { path: 'visitors-chart', component: VisitorsChartComponent },
+  { path: 'visitors-chart', component: VisitorChartComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'details', component: DetailsComponent },
+  { path: 'approved-list/details/:id', component: DetailsComponent },
 
 ];

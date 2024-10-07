@@ -1,14 +1,17 @@
 import { Component } from '@angular/core';
 import { HostApiService } from '../../Services/host-api.service';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-approved-list',
   standalone: true,
-  imports: [],
+  imports: [RouterModule,CommonModule],
   templateUrl: './approved-list.component.html',
   styleUrl: './approved-list.component.css'
 })
 export class ApprovedListComponent {
+  router: any;
 
 
   constructor(private HostApi:HostApiService) { }
@@ -19,9 +22,9 @@ export class ApprovedListComponent {
 
     this.HostApi.getAllHosts().subscribe({
       next:(host)=>{
-        this.Host=host
-       console.log( this.Host=host);
 
+        this.Host=host
+        console.log("test");
 
       },
       error:(err)=>{
@@ -32,19 +35,11 @@ export class ApprovedListComponent {
 
     })
 
-  
-  }
-  deleteHost(id: number): void {
-    this.HostApi.deleteHost(id).subscribe(
-      response => {
-        // إزالة المضيف من الواجهة بعد نجاح الحذف
-        this.Host = this.Host.filter(host => host.id !== id);
-        console.log('is deleted');
-      },
-      error => {
-        console.error( error);
-      }
-    );
+
   }
 
+
 }
+
+ //
+

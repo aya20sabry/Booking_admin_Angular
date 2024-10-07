@@ -6,12 +6,12 @@
       <!-- <img src={{onehost.images}} class="card-img-top" > -->
       <div class="card-body">
         <h5 class="card-title">{{onehost.name.en}}</h5>
-        <!-- <p class="card-text">{{}}</p> -->
-  
-    <button onclick="deleteHost(id)">Delete</button>
+        <p >{{onehost._id}}</p>
+    
+        <button (click)="deleteHost(onehost._id)">deleteHost</button>
       </div>
     </div>
-    
+
   }
 
 </div>
