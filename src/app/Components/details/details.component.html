@@ -1,28 +1,21 @@
-<div class='row '>
-  @for(onehost of Host ;track onehost.id){
-    @if (onehost._id== this.id) {
-      <div class="card col-6 m-4" style="width: 18rem;">
+<div class="row">
+  @for(onehost of Host ;track onehost.id){ @if (onehost._id== this.id) {
+  <div class="card col-6 m-4" style="width: 18rem">
+    <img [src]="onehost.images" class="card-img-top" />
+    <div class="card-body">
+      <h5 class="card-title">{{ onehost.name.en }}</h5>
+      <button (click)="toggleApproval(onehost._id)">
+        {{ onehost.approved ? "Not Approved" : "Approved" }}
+      </button>
 
-        <img [src]="onehost.images" class="card-img-top">
-        <div class="card-body">
-
-          <h5 class="card-title">{{onehost.name.en}}</h5>
-          <button (click)="toggleApproval(onehost.id)">{{ onehost.approved ? 'Not Approved': 'Approved'  }} </button>
-
-<!--
+      <!--
           <button onclick="onehost.name ? 'false' : 'true' ">
             {{ onehost.approved ? 'Not Approved': 'Approved'  }}
           </button> -->
-          <!-- <button >
+      <!-- <button >
             {{ onehost.approved=='true' ? 'not_avilable' : ' Approve_naw' }}
           </button> -->
-                </div>
-      </div>
-    }
-
-
-
-  }
-
-
+    </div>
+  </div>
+  } }
 </div>

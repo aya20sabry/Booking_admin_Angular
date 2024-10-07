@@ -54,10 +54,8 @@
 
 //       }
 
-
 //     })
 //   }
-
 
 //   // toggleApproval(): void {
 //   //   this.onehost.approved = !this.onehost.approved;
@@ -129,17 +127,17 @@ import { HostApiService } from '../../Services/host-api.service';
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
-  styleUrls: ['./details.component.css']
+  styleUrls: ['./details.component.css'],
 })
 export class DetailsComponent implements OnInit {
   id: string | null = null;
   isToggled: boolean = false;
-  Host: any[] = []; 
+  Host: any[] = [];
 
   constructor(private route: ActivatedRoute, private HostApi: HostApiService) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       this.id = params['id'];
       console.log('ID', this.id);
     });
@@ -148,8 +146,9 @@ export class DetailsComponent implements OnInit {
       next: (hosts) => {
         this.Host = hosts;
         console.log(' data is:', this.Host);
+        console.log(hosts);
 
-        const host = this.Host.find(h => h.id === this.id);
+        const host = this.Host.find((h) => h.id === this.id);
         if (host) {
           console.log('  data Before change:', host.approved);
 
@@ -161,18 +160,12 @@ export class DetailsComponent implements OnInit {
       },
       error: (err) => {
         console.error('err in giving data', err);
-      }
+      },
     });
   }
 
   toggleApproval(id: string): void {
-    const host = this.Host.find(h => h.id === id);
-    if (host) {
-      host.approved = !host.approved;
-      console.log(`تHost ID is changed: ${id}إto ${host.approved}`);
-
-      this.updateApprovalInDatabase(host.id, host.approved);
-    }
+    this.updateApprovalInDatabase(id, true);
   }
 
   updateApprovalInDatabase(id: string, approved: boolean): void {
@@ -182,7 +175,7 @@ export class DetailsComponent implements OnInit {
       },
       error: (err) => {
         console.error('error', err);
-      }
+      },
     });
   }
 }
