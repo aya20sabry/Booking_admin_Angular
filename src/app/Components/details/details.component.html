@@ -1,21 +1,56 @@
-<div class="row">
-  @for(onehost of Host ;track onehost.id){ @if (onehost._id== this.id) {
-  <div class="card col-6 m-4" style="width: 18rem">
-    <img [src]="onehost.images" class="card-img-top" />
-    <div class="card-body">
-      <h5 class="card-title">{{ onehost.name.en }}</h5>
-      <button (click)="toggleApproval(onehost._id)">
-        {{ onehost.approved ? "Not Approved" : "Approved" }}
-      </button>
 
-      <!--
-          <button onclick="onehost.name ? 'false' : 'true' ">
-            {{ onehost.approved ? 'Not Approved': 'Approved'  }}
-          </button> -->
-      <!-- <button >
-            {{ onehost.approved=='true' ? 'not_avilable' : ' Approve_naw' }}
-          </button> -->
-    </div>
-  </div>
-  } }
+<div class="row ">
+  @for (onehost of Host; track onehost.id) {
+    @if (onehost._id === this.id) {
+      <div class="col-12 mb-4">
+        <!-- Image Carousel -->
+        <div id="imageCarousel-{{onehost._id}}" class="carousel slide mb-3 col-5 m-auto" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            @for (image of onehost.images; track image; let i = $index) {
+              <div class="carousel-item" [class.active]="i === 0">
+                <img [src]="image" class="d-block w-100" alt="Host image {{i + 1}}">
+              </div>
+            }
+          </div>
+          <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#imageCarousel-' + onehost._id" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#imageCarousel-' + onehost._id" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+        
+        <!-- Host Information Card -->
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title mb-4">{{ onehost.name.en }}</h3>
+            
+            <div class="host-info">
+              <p><strong>Address:</strong> {{ onehost.location.Address.en }}, {{ onehost.location.city.en }}</p>
+              
+              <h5 class="mt-4 mb-2">About the Host</h5>
+              <p class="card-text">{{ onehost.description.en }}</p>
+              
+              <h5 class="mt-4 mb-2">House Rules</h5>
+              <ul class="list-unstyled">
+                <li>
+                  <i class="bi bi-{{ onehost.HouseRules.NoSmoking ? 'x-circle' : 'check-circle' }} me-2"></i>
+                  {{ onehost.HouseRules.NoSmoking ? 'No smoking allowed' : 'Smoking allowed' }}
+                </li>
+                <!-- Add more house rules here as needed -->
+              </ul>
+            </div>
+        
+          </div>
+    
+            <button class="btn btn-primary" (click)="toggleApproval(onehost._id)">
+           {{ onehost.approved ? "Unapprove" : "Approve" }}
+            </button>
+          </div>
+        </div>
+     
+    }
+  }
 </div>

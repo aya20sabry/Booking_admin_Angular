@@ -6,19 +6,24 @@ import { VisitorChartComponent } from './Components/visitors-chart/visitors-char
 import { UsersListControlComponent } from './Components/users-list-control/users-list-control.component';
 import { LoginComponent } from './Components/login/login.component';
 import { EarningChartComponent } from './Components/earning-chart/earning-chart.component';
-import { HotelsListComponent } from './Components/hotels-list/hotels-list.component';
 import { DetailsComponent } from './Components/details/details.component';
-
+import { userauthGuard } from './Guards/guards.service';
+import { MainlayoutComponent } from './Components/mainlayout/mainlayout.component';
 export const routes: Routes = [
-  { path: '', component: DashboardComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'approved-list', component: ApprovedListComponent },
-  { path: 'apartment-list', component: ApartmentListComponent },
-  { path: 'earning-chart', component: EarningChartComponent },
-  { path: 'hotels-list', component: HotelsListComponent },
-  { path: 'users-list-control', component: UsersListControlComponent },
-  { path: 'visitors-chart', component: VisitorChartComponent },
+  {
+    path: '',
+    component: MainlayoutComponent,
+    children: [
+      { path: '', component: DashboardComponent, pathMatch: 'full' },
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'approved-list', component: ApprovedListComponent },
+      { path: 'apartment-list', component: ApartmentListComponent },
+      { path: 'earning-chart', component: EarningChartComponent },
+      { path: 'users-list-control', component: UsersListControlComponent },
+      { path: 'visitors-chart', component: VisitorChartComponent },
+      { path: 'approved-list/details/:id', component: DetailsComponent },
+    ],
+  },
   { path: 'login', component: LoginComponent },
-  { path: 'approved-list/details/:id', component: DetailsComponent },
-
+  { path: '**', redirectTo: '/dashboard' },
 ];

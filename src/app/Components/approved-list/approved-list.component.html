@@ -1,27 +1,51 @@
-<div class='row '>
-  @for(onehost of Host ;track onehost.id){
-    @if (onehost.approved==false) {
-      <div class="card col-6 m-4" style="width: 18rem;">
 
-        <img [src]="onehost.images" class="card-img-top">
-        <div class="card-body">
+<!-- ====================== -->
+<div class="container">
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <select (change)="onFilterChange($event)" class="form-select">
+        <option value="all">All</option>
+        <option value="approved">Approved</option>
+        <option value="not-approved">Not Approved</option>
+      </select>
+    </div>
+  </div>
 
-          <h5 class="card-title">{{onehost.name.en}}</h5>
-          <a
-          class="nav-link  rounded-start-5 ps-4 mb-2"
-          routerLink="/approved-list/details/:id"
-          routerLinkActive="active"
-          [queryParams]="{ id: onehost._id }"
-        ><p> Details</p>
-        </a>
-          <!-- <button [routerLink]="['/details', onehost._id]"> Details</button> -->
-        </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>Name</th>
+              <th>Status</th>
+              <th>Image</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let host of filteredHosts">
+              <td>{{ host.name?.en }}</td>
+              <td>
+                <span [ngClass]="{'badge bg-success': host.approved, 'badge bg-warning': !host.approved}">
+                  {{ host.approved ? 'Approved' : 'Not Approved' }}
+                </span>
+              </td>
+              <td>
+                <img [src]="host.images" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;" />
+              </td>
+              <td>
+                <a [routerLink]="['/approved-list/details', host._id]" [queryParams]="{ id: host._id }" class="btn btn-info btn-sm me-2">
+                  View Details
+                </a>
+                <button (click)="deleteHost(host._id)" class="btn btn-danger btn-sm">
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    }
-
-
-
-  }
-
-
+    </div>
+  </div>
 </div>
