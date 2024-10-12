@@ -1,1 +1,22 @@
-<p>users-list-control works!</p>
+<div class="user-management">
+  <h1 class="title">User Management</h1>
+
+  <button class="refresh-btn" (click)="refreshUsers()">Refresh Users</button>
+
+  <div *ngIf="!loading && !error" class="user-cards">
+    <div *ngFor="let user of users; trackBy: trackByUserId" class="user-card">
+      <h3 class="user-name">{{ user.username }}</h3>
+      <p class="user-info">Email: {{ user.email }}</p>
+      <p class="user-info">Role: {{ user.role }}</p>
+      <div class="actions">
+        <button class="action-btn delete-btn" (click)="deleteUser(user._id)">Delete</button>
+        <button class="action-btn block-btn" (click)="toggleBlockUser(user._id, user.isBlocked)">
+          {{ user.isBlocked ? 'Unblock' : 'Block' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <p *ngIf="loading" class="status-message">Loading users...</p>
+  <p *ngIf="error" class="status-message error-message">{{ error }}</p>
+</div>

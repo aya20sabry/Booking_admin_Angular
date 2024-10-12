@@ -1,1 +1,49 @@
-<p>apartment-list works!</p>
+<!-- <h1>Apartment Listings</h1>
+
+<div *ngIf="!loading && !error" class="apartment-cards">
+  <div *ngFor="let apartment of apartments; trackBy: trackByApartmentId" class="apartment-card">
+    <h3>{{ apartment.name.en }}</h3>
+    <p>Phone: {{ apartment.phone }}</p>
+    <p>Location: {{ apartment.city }}, {{ apartment.address }}</p>
+
+    <div *ngIf="apartment.images && apartment.images.length > 0" class="apartment-images">
+      <img *ngFor="let image of apartment.images" [src]="image" alt="Apartment image">
+    </div>
+
+    <p *ngIf="apartment.review">Review: {{ apartment.review }}</p>
+
+    <h4>Facilities:</h4>
+    <ul>
+      <li *ngFor="let facility of getApprovedFacilities(apartment)">
+        {{ facility }}
+      </li>
+    </ul>
+
+    <p>Approved: {{ apartment.approved }}</p>
+    <button (click)="deleteApartment(apartment._id)">Delete Apartment</button>
+  </div>
+</div>
+
+<p *ngIf="loading">Loading apartments...</p>
+<p *ngIf="error">{{ error }}</p> -->
+<h1 class="title">Apartment Listings</h1>
+
+<div *ngIf="!loading && !error" class="apartment-grid">
+  <div *ngFor="let apartment of apartments; trackBy: trackByApartmentId" class="apartment-card">
+    <div class="apartment-image">
+      <img *ngIf="apartment.images && apartment.images.length > 0" [src]="apartment.images[0]" alt="Apartment image">
+      <img *ngIf="!apartment.images || apartment.images.length === 0" src="assets/placeholder.jpg" alt="Placeholder image">
+    </div>
+    <div class="apartment-info">
+      <h3>{{ apartment.name.en }}</h3>
+      <p><i class="fas fa-phone"></i> {{ apartment.phone }}</p>
+      <p><i class="fas fa-map-marker-alt"></i> {{ apartment.city }}, {{ apartment.address }}</p>
+    </div>
+    <button class="delete-btn" (click)="deleteApartment(apartment._id)">
+      <i class="fas fa-trash"></i> Delete
+    </button>
+  </div>
+</div>
+
+<p *ngIf="loading" class="loading">Loading apartments...</p>
+<p *ngIf="error" class="error">{{ error }}</p>
