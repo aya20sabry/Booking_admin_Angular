@@ -5,21 +5,18 @@
       <div class="col-12 mb-4">
         <!-- Image Carousel -->
         <div id="imageCarousel-{{onehost._id}}" class="carousel slide mb-3 col-5 m-auto" data-bs-ride="carousel">
-          <div class="carousel-inner">
-            @for (image of onehost.images; track image; let i = $index) {
-              <div class="carousel-item" [class.active]="i === 0">
-                <img [src]="image" class="d-block w-100" alt="Host image {{i + 1}}">
-              </div>
-            }
+          <div class="col-8">
+            <div class="image-grid">
+              @for (image of onehost.images; track image) {
+                <div class="image-item">
+                  <img [src]="image" class="img-fluid" [alt]="'Host image'">
+                </div>
+              }
+              
+            </div>
           </div>
-          <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#imageCarousel-' + onehost._id" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#imageCarousel-' + onehost._id" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
+         
+       
         </div>
         
         <!-- Host Information Card -->

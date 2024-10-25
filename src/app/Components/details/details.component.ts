@@ -22,7 +22,9 @@ export class DetailsComponent implements OnInit {
     });
 
     this.loadHostData();
+   
   }
+ 
 
   loadHostData(): void {
     this.HostApi.getAllHosts().subscribe({
@@ -62,4 +64,5 @@ export class DetailsComponent implements OnInit {
       },
     });
   }
+  
 }
