@@ -21,4 +21,7 @@ export class UserApiService {
   blockUser(id: string, blockStatus: boolean): Observable<any> {
     return this.http.patch(`${this.apiUrl}/users/${id}`, { active: !blockStatus });
   }
+  updateUserRole(userId: string, newRole: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/users/${userId}/role`, { role: newRole });
+  }
 }

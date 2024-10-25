@@ -5,11 +5,36 @@
 
   <div *ngIf="!loading && !error" class="user-cards">
     <div *ngFor="let user of users; trackBy: trackByUserId" class="user-card">
-      <h3 class="user-name">{{ user.username }}</h3>
+      <h3 class="user-name">Username: {{ user.userName }}</h3>
       <p class="user-info">Email: {{ user.email }}</p>
       <p class="user-info">Role: {{ user.role }}</p>
+      <p class="user-info">Members: {{ user.numberOfMembers }}</p>
+      
+      <div *ngIf="user.showAllInfo">
+        <p class="user-info">Phone: {{ user.phoneNumber }}</p>
+        <p class="user-info">Full Name: {{ user.firstName }} {{ user.lastName }}</p>
+        <p class="user-info">Nationality: {{ user.nationality }}</p>
+        <p class="user-info">Connected: {{ user.active }}</p>
+        <p class="user-info">Joined At: {{ user.createdAt }}</p>
+        
+        <!-- Add role editing functionality -->
+        <div class="role-edit">
+          <select [(ngModel)]="user.newRole" [value]="user.role">
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+            <!-- Add more role options if needed -->
+          </select>
+          <button class="action-btn update-role-btn" (click)="updateUserRole(user)" [disabled]="user.newRole === user.role">
+            Update Role
+          </button>
+        </div>
+      </div>
+
       <div class="actions">
-        <button class="action-btn delete-btn" (click)="deleteUser(user._id)">Delete</button>
+        <button class="action-btn info-btn" (click)="toggleUserInfo(user)">
+          {{ user.showAllInfo ? 'Hide Info' : 'Show All Info' }}
+        </button>
+        <button class="action-btn delete-btn" (click)="deleteUser(user)">Delete</button>
         <button class="action-btn block-btn" (click)="toggleBlockUser(user._id, user.isBlocked)">
           {{ user.isBlocked ? 'Unblock' : 'Block' }}
         </button>

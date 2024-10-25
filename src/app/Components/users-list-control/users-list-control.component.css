@@ -1,8 +1,11 @@
 .user-management {
   font-family: Arial, sans-serif;
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 900px;
+  margin: 20px auto;
   padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .title {
@@ -12,10 +15,10 @@
 }
 
 .refresh-btn {
-  background-color: #4CAF50;
+  background-color: #0400d4;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 12px 25px;
   font-size: 16px;
   cursor: pointer;
   border-radius: 5px;
@@ -24,42 +27,49 @@
 }
 
 .refresh-btn:hover {
-  background-color: #45a049;
+  background-color: #005ca7;
 }
 
 .user-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .user-card {
-  background-color: #2196F3;
-  color: white;
-  border-radius: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s;
 }
 
 .user-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 15px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .user-name {
-  font-size: 1.5em;
-  margin-bottom: 10px;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
 }
 
 .user-info {
   margin: 5px 0;
+  color: #555;
+}
+.info-btn {
+  background-color: #4c90af;
+  color: white;
 }
 
 .actions {
   display: flex;
-  justify-content: space-between;
-  margin-top: 15px;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 .action-btn {
@@ -71,7 +81,7 @@
 }
 
 .delete-btn {
-  background-color: #f44336;
+  background-color: #e57373;
   color: white;
 }
 
@@ -80,20 +90,21 @@
 }
 
 .block-btn {
-  background-color: #FFC107;
-  color: black;
+  background-color: #004696; 
+  color: white;
 }
 
 .block-btn:hover {
-  background-color: #FFA000;
+  background-color: #080079; 
 }
 
 .status-message {
   text-align: center;
   font-size: 1.2em;
   margin-top: 20px;
+  color: #333;
 }
 
 .error-message {
-  color: #f44336;
+  color: #d32f2f;
 }
