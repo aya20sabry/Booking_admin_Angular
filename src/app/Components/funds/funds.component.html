@@ -1,0 +1,131 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card rounded-4 p-4">
+      <div class="card-body">
+        <p class="fw-bold fs-5">Owner Balance</p>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Owner</th>
+                <th>Current Balance</th>
+                <th>Total Paid</th>
+                <th>total_earned</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="ownerBalance.length > 0">
+              <tr *ngFor="let balance of ownerBalance; let i = index">
+                <td>
+                  {{ balanceOwners[i]?.firstName }}
+                  {{ balanceOwners[i]?.lastName }}
+                </td>
+                <td>{{ Math.round(balance.current_balance) }}</td>
+                <td>{{ Math.round(balance.total_paid) }}</td>
+                <td>{{ Math.round(balance.total_earned) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12 mt-2 mt-md-4">
+    <div class="card rounded-4 p-4">
+      <div class="card-body">
+        <p class="fw-bold fs-5">Payout Requests</p>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Owner</th>
+                <th>Paypal Email</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="payoutRequests.length > 0">
+              <tr *ngFor="let payout of payoutRequests; let i = index">
+                <td>
+                  {{ payoutOwners[i]?.firstName }}
+                  {{ payoutOwners[i]?.lastName }}
+                </td>
+                <td>{{ payout.payment_reference }}</td>
+                <td>{{ Math.round(payout.amount) }}</td>
+                <td class="text-capitalize">
+                  <p
+                    class="rounded-4 text-center text-white fw-medium"
+                    [ngClass]="{
+                      'bg-success ': payout.status === 'PAID',
+                      'text-danger ': payout.status === 'FAILED',
+                      'bg-warning ': payout.status === 'PENDING'
+                    }"
+                  >
+                    {{ payout.status }}
+                  </p>
+                </td>
+                <td>
+                  <button
+                    class="btn paypal-button"
+                    (click)="capturePayoutRequest(payout)"
+                    [disabled]="payout.status === 'PAID'"
+                  >
+                    <span *ngIf="!payout.isLoading">
+                      <i class="bi bi-paypal me-2"></i>
+                      Pay with
+                      <span class="pay-color">Pay</span>
+                      <span class="pal-color">Pal</span>
+                    </span>
+                    <span
+                      *ngIf="payout.isLoading"
+                      class="spinner-border spinner-border-sm"
+                      role="status"
+                    >
+                      <span class="visually-hidden">Loading...</span>
+                    </span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+  <div
+    id="liveToast"
+    class="alert alert-warning alert-dismissible fade"
+    role="alert"
+  >
+    <div *ngIf="notification">
+      <strong>New Payout Request!</strong>
+      <p class="mb-0">An Owner has requested a payout</p>
+    </div>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+</div>
+<div
+  class="position-fixed top-0 start-50 translate-middle-x p-3"
+  style="z-index: 11"
+>
+  <div
+    id="successAlert"
+    class="alert alert-success alert-dismissible fade show d-none"
+    role="alert"
+  >
+    Transaction completed successfully!
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+</div>

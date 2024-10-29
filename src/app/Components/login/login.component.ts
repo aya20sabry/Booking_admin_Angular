@@ -6,7 +6,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { JWTService } from '../../Services/Jwt/jwt.service';
 
-/////////////////////////
 @Component({
   selector: 'app-login',
   standalone: true,

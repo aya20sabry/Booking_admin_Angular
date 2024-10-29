@@ -1,0 +1,48 @@
+/* funds.component.css */
+:host {
+  display: block;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.paypal-button {
+  background-color: #ffc539;
+  color: white;
+  border: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.2s;
+}
+
+.paypal-button:hover:not(:disabled) {
+  background-color: #003087;
+  .pay-color {
+    color: white;
+  }
+  .pal-color {
+    color: white;
+  }
+}
+
+.paypal-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.pay-color {
+  color: #113a84;
+  font-weight: 600;
+}
+
+.pal-color {
+  color: #029cde;
+  font-weight: 600;
+}
