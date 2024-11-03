@@ -194,7 +194,7 @@ export class FundsComponent implements OnInit, OnDestroy {
         payment_date: new Date(),
       })
       .subscribe(() => {
-        payout.isLoading = false; // Reset loading state
+        payout.isLoading = false;
         const ownerBalance = this.ownerBalance.find(
           (b) => b.owner_id === payout.owner_id
         );
