@@ -6,8 +6,10 @@ export interface Apartment {
   _id: string;
   name: { en: string; ar: string };
   phone: string;
-  city: string;
-  address: string;
+  location: {
+    city: { en: string };
+    country: { en: string };
+  };
   images: string[];
   review: string[];
   facilities: { [key: string]: boolean };
@@ -15,10 +17,10 @@ export interface Apartment {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApartmentApiService {
-  private apiUrl = 'http://localhost:3000/apartments';  
+  private apiUrl = 'http://localhost:3000/apartments';
 
   constructor(private http: HttpClient) {}
 
@@ -38,7 +40,10 @@ export class ApartmentApiService {
   }
 
   // Update an existing apartment by ID
-  updateApartment(id: string, apartmentData: Partial<Apartment>): Observable<Apartment> {
+  updateApartment(
+    id: string,
+    apartmentData: Partial<Apartment>
+  ): Observable<Apartment> {
     return this.http.put<Apartment>(`${this.apiUrl}/${id}`, apartmentData);
   }
 

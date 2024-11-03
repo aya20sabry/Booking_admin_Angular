@@ -1,53 +1,100 @@
+<div class="container mt-4">
+  @for(onehost of Host ;track onehost.id){ @if (onehost._id == this.id) {
+  <div class="row">
+    <!-- Image Gallery Section -->
+    <div class="col-md-8 gallery">
+      <div id="hotelCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          @for(image of onehost.images; track $index) {
+          <div class="carousel-item" [class.active]="$index === 0">
+            <img
+              [src]="image"
+              class="d-block w-100 rounded shadow-sm photo-gallery"
+              [alt]="onehost.name.en"
+            />
+          </div>
+          }
+        </div>
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#hotelCarousel"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#hotelCarousel"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
 
-<div class="row ">
-  @for (onehost of Host; track onehost.id) {
-    @if (onehost._id === this.id) {
-      <div class="col-12 mb-4">
-        <!-- Image Carousel -->
-        <div id="imageCarousel-{{onehost._id}}" class="carousel slide mb-3 col-5 m-auto" data-bs-ride="carousel">
-          <div class="col-8">
-            <div class="image-grid">
-              @for (image of onehost.images; track image) {
-                <div class="image-item">
-                  <img [src]="image" class="img-fluid" [alt]="'Host image'">
-                </div>
+    <!-- Hotel Details Section -->
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title">{{ onehost.name.en }}</h2>
+          <p class="text-muted">{{ onehost.location.Address.en }}</p>
+
+          <div class="mb-3">
+            <h5>Price per night</h5>
+            <p class="h3 text-success">
+              EGP {{ onehost.HouseRules.PricePerNight }}
+            </p>
+          </div>
+
+          <div class="mb-3">
+            <h5>Check-in/Check-out</h5>
+            <p>
+              Check-in: {{ onehost.HouseRules.CheckInTime }}<br />
+              Check-out: {{ onehost.HouseRules.CheckOutTime }}
+            </p>
+          </div>
+
+          @if(onehost.HouseRules.NoSmoking || onehost.HouseRules.NoPets ||
+          onehost.HouseRules.NoParties) {
+          <div class="mb-3">
+            <h5>House Rules</h5>
+            <ul class="list-unstyled">
+              @if(onehost.HouseRules.NoSmoking) {
+              <li><i class="fas fa-smoking-ban"></i> No Smoking</li>
+              } @if(onehost.HouseRules.NoPets) {
+              <li><i class="fas fa-ban"></i> No Pets</li>
+              } @if(onehost.HouseRules.NoParties) {
+              <li><i class="fas fa-glass-cheers"></i> No Parties</li>
               }
-              
-            </div>
+            </ul>
           </div>
-         
-       
+          } @if(onehost.phone) {
+          <div class="mb-3">
+            <h5>Contact</h5>
+            <p><i class="fas fa-phone"></i> {{ onehost.phone }}</p>
+          </div>
+          }
+          <button
+            class="btn btn-primary w-100"
+            (click)="toggleApproval(onehost._id)"
+          >
+            {{ onehost.approved ? "Revoke Approval" : "Approve Listing" }}
+          </button>
         </div>
-        
-        <!-- Host Information Card -->
-        <div class="card">
-          <div class="card-body">
-            <h3 class="card-title mb-4">{{ onehost.name.en }}</h3>
-            
-            <div class="host-info">
-              <p><strong>Address:</strong> {{ onehost.location.Address.en }}, {{ onehost.location.city.en }}</p>
-              
-              <h5 class="mt-4 mb-2">About the Host</h5>
-              <p class="card-text">{{ onehost.description.en }}</p>
-              
-              <h5 class="mt-4 mb-2">House Rules</h5>
-              <ul class="list-unstyled">
-                <li>
-                  <i class="bi bi-{{ onehost.HouseRules.NoSmoking ? 'x-circle' : 'check-circle' }} me-2"></i>
-                  {{ onehost.HouseRules.NoSmoking ? 'No smoking allowed' : 'Smoking allowed' }}
-                </li>
-                <!-- Add more house rules here as needed -->
-              </ul>
-            </div>
-        
-          </div>
-    
-            <button class="btn btn-primary" (click)="toggleApproval(onehost._id)">
-           {{ onehost.approved ? "Unapprove" : "Approve" }}
-            </button>
-          </div>
+      </div>
+    </div>
+
+    <!-- Description Section -->
+    <div class="col-12 mt-4">
+      <div class="card">
+        <div class="card-body">
+          <h3>About this property</h3>
+          <p class="card-text">{{ onehost.description.en }}</p>
         </div>
-     
-    }
-  }
+      </div>
+    </div>
+  </div>
+  } }
 </div>

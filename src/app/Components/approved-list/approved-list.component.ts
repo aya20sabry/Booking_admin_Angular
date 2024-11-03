@@ -1,15 +1,14 @@
-
 import { Component, OnInit } from '@angular/core';
-import { HostApiService } from '../../Services/host-api.service'; 
+import { HostApiService } from '../../Services/host-api.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 @Component({
   standalone: true,
   selector: 'app-apartment-list',
-  imports: [RouterModule,CommonModule],
-  templateUrl:'./approved-list.component.html',
-  styleUrls: ['./approved-list.component.css']
+  imports: [RouterModule, CommonModule],
+  templateUrl: './approved-list.component.html',
+  styleUrls: ['./approved-list.component.css'],
 })
 export class ApprovedListComponent implements OnInit {
   hosts: any[] = [];
@@ -37,9 +36,9 @@ export class ApprovedListComponent implements OnInit {
 
   filterHosts() {
     if (this.selectedFilter === 'approved') {
-      this.filteredHosts = this.hosts.filter(host => host.approved === true);
+      this.filteredHosts = this.hosts.filter((host) => host.approved === true);
     } else if (this.selectedFilter === 'not-approved') {
-      this.filteredHosts = this.hosts.filter(host => host.approved === false);
+      this.filteredHosts = this.hosts.filter((host) => host.approved === false);
     } else {
       this.filteredHosts = [...this.hosts];
     }
@@ -52,20 +51,18 @@ export class ApprovedListComponent implements OnInit {
   }
 
   deleteHost(id: string): void {
-    console.log('Deleting host with id:', id);
-
-    this.hostApi.deleteHost(id).subscribe({
-      next: () => {
-        console.log('Host deleted successfully');
-        // Remove the deleted host from both arrays
-        this.hosts = this.hosts.filter(host => host._id !== id);
-        this.filteredHosts = this.filteredHosts.filter(host => host._id !== id);
-        console.log('Updated hosts:', this.hosts);
-        console.log('Updated filtered hosts:', this.filteredHosts);
-      },
-      error: (err) => {
-        console.error('Error deleting host:', err);
-      }
-    });
+    if (confirm('Are you sure you want to delete this host?')) {
+      this.hostApi.deleteHost(id).subscribe({
+        next: () => {
+          this.hosts = [...this.hosts.filter((host) => host._id !== id)];
+          this.filteredHosts = [
+            ...this.filteredHosts.filter((host) => host._id !== id),
+          ];
+        },
+        error: (err) => {
+          console.error('Error deleting host:', err);
+        },
+      });
+    }
   }
 }

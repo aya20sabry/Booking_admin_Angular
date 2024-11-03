@@ -2,54 +2,54 @@
 // import { HostApiService } from '../../Services/host-api.service';
 
 // export interface  Host {
-//   _id: string; 
+//   _id: string;
 //   ownerId: string;
 //   name: {
-//     en: string; 
-//     ar: string; 
+//     en: string;
+//     ar: string;
 //   };
 //   subDescription: {
 //     en: string;
-//     ar: string; 
+//     ar: string;
 //   };
 //   description: {
 //     en: string;
-//     ar: string; 
+//     ar: string;
 //   };
 //   location: {
 //     Address: {
-//       en: string; 
-//       ar: string; 
+//       en: string;
+//       ar: string;
 //     };
 //     city: {
-//       en: string; 
-//       ar: string; 
+//       en: string;
+//       ar: string;
 //     };
 //     country: {
-//       en: string; 
-//       ar: string; 
+//       en: string;
+//       ar: string;
 //     };
 //   };
-//   images: string[]; 
-//   AverageRating: number; 
-//   ReviewCount: number; 
+//   images: string[];
+//   AverageRating: number;
+//   ReviewCount: number;
 //   approved: boolean;
 //   PricePerNight: number;
-//   CheckInTime: string; 
-//   CheckOutTime: string; 
+//   CheckInTime: string;
+//   CheckOutTime: string;
 //   HouseRules: {
-//     NoParties: boolean; 
-//     NoPets: boolean; 
+//     NoParties: boolean;
+//     NoPets: boolean;
 //     NoSmoking: boolean;
 //     Cancellation: {
-//       Policy: object; 
-//       Refundable: boolean; 
-//       DeadlineDays: number; 
+//       Policy: object;
+//       Refundable: boolean;
+//       DeadlineDays: number;
 //     };
 //   };
-//   phone: string | number; 
+//   phone: string | number;
 //   CreatedAt: string;
-//   UpdatedAt: string; 
+//   UpdatedAt: string;
 // }
 // @Component({
 //   selector: 'app-hotels-list',
@@ -72,46 +72,42 @@
 //         this.Host=host
 //        console.log( this.Host=host);
 
-
 //       },
 //       error:(err)=>{
 //         console.log(err);
 
 //       }
 
-
 //     })
 
 // }
-
 
 // deleteHost(id:String): void {
 //   this.HostApi.deleteHost(id).subscribe({
 
 //     next: () => {
 //       console.log('hotel deleted successfully');
-     
+
 //     },
 //     error: (err) => {
 //       console.error('Error deleting hotel:', err);
 //     }
 //   });
 // }
-   
+
 //   }
 
 import { Component, OnInit } from '@angular/core';
 import { HostApiService } from '../../Services/host-api.service';
 
 export interface Host {
-  _id: string; 
- 
+  _id: string;
 }
 
 @Component({
   selector: 'app-hotels-list',
   templateUrl: './hotels-list.component.html',
-  styleUrls: ['./hotels-list.component.css']
+  styleUrls: ['./hotels-list.component.css'],
 })
 export class HotelsListComponent implements OnInit {
   Host: any[] = [];
@@ -122,11 +118,11 @@ export class HotelsListComponent implements OnInit {
     this.hostApi.getAllHosts().subscribe({
       next: (hosts) => {
         this.Host = hosts;
-        console.log("test!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        console.log('test!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
       },
       error: (err) => {
         console.error(err);
-      }
+      },
     });
   }
 
@@ -144,18 +140,13 @@ export class HotelsListComponent implements OnInit {
 
   deleteHost(id: string): void {
     console.log(id),
-  
-    this.hostApi.deleteHost(id).subscribe({
-  
-      next: () => {
-        console.log('hotel deleted successfully');
-       
-      },
-      error: (err) => {
-        console.error('Error deleting hotel:', err);
-      }
-    });
-   
+      this.hostApi.deleteHost(id).subscribe({
+        next: () => {
+          console.log('hotel deleted successfully');
+        },
+        error: (err) => {
+          console.error('Error deleting hotel:', err);
+        },
+      });
   }
 }
-

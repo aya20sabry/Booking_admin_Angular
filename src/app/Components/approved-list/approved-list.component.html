@@ -1,45 +1,60 @@
-
-<!-- ====================== -->
-<div class="container">
-  <div class="row mb-3">
+<div class="container py-4">
+  <div class="row mb-4">
     <div class="col-md-4">
-      <select (change)="onFilterChange($event)" class="form-select">
-        <option value="all">All</option>
-        <option value="approved">Approved</option>
-        <option value="not-approved">Not Approved</option>
+      <label class="form-label text-muted mb-2">Filter by Status</label>
+      <select (change)="onFilterChange($event)" class="form-select shadow-sm">
+        <option value="all">All Hosts</option>
+        <option value="approved">Approved Hosts</option>
+        <option value="not-approved">Pending Approval</option>
       </select>
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-12">
-      <div class="table-responsive">
-        <table class="table table-hover">
+      <div class="table-responsive shadow rounded">
+        <table class="table table-hover mb-0">
           <thead class="table-light">
             <tr>
-              <th>Name</th>
-              <th>Status</th>
-              <th>Image</th>
-              <th>Actions</th>
+              <th class="px-4 py-3">Name</th>
+              <th class="px-4 py-3">Status</th>
+              <th class="px-4 py-3">Image</th>
+              <th class="px-4 py-3">Actions</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let host of filteredHosts">
-              <td>{{ host.name?.en }}</td>
-              <td>
-                <span [ngClass]="{'badge bg-success': host.approved, 'badge bg-warning': !host.approved}">
-                  {{ host.approved ? 'Approved' : 'Not Approved' }}
+              <td class="px-4 py-3 align-middle">{{ host.name?.en }}</td>
+              <td class="px-4 py-3 align-middle">
+                <span
+                  [ngClass]="{
+                    'text-success ': host.approved,
+                    'text-warning': !host.approved
+                  }"
+                >
+                  {{ host.approved ? "Approved" : "Pending" }}
                 </span>
               </td>
-              <td>
-                <img [src]="host.images" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;" />
+              <td class="px-4 py-3 align-middle">
+                <img
+                  [src]="host.images[0]"
+                  class="rounded shadow-sm"
+                  style="width: 80px; height: 80px; object-fit: cover"
+                />
               </td>
-              <td>
-                <a [routerLink]="['/approved-list/details', host._id]" [queryParams]="{ id: host._id }" class="btn btn-info btn-sm me-2">
-                  View Details
+              <td class="px-4 py-3 align-middle">
+                <a
+                  [routerLink]="['/approved-list/details', host._id]"
+                  [queryParams]="{ id: host._id }"
+                  class="btn btn-outline-primary btn-sm me-2"
+                >
+                  <i class="bi bi-eye-fill me-1"></i> View
                 </a>
-                <button (click)="deleteHost(host._id)" class="btn btn-danger btn-sm">
-                  Delete
+                <button
+                  (click)="deleteHost(host._id)"
+                  class="btn btn-outline-danger btn-sm"
+                >
+                  <i class="bi bi-trash-fill me-1"></i> Delete
                 </button>
               </td>
             </tr>

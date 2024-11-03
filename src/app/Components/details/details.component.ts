@@ -1,5 +1,3 @@
-
-// ======================
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HostApiService } from '../../Services/host-api.service';
@@ -18,51 +16,36 @@ export class DetailsComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       this.id = params['id'];
-      console.log('ID', this.id);
+      this.loadHosts();
     });
-
-    this.loadHostData();
-   
   }
- 
 
-  loadHostData(): void {
+  loadHosts() {
     this.HostApi.getAllHosts().subscribe({
       next: (hosts) => {
         this.Host = hosts;
-        console.log('Data is:', this.Host);
       },
       error: (err) => {
-        console.error('Error in fetching data', err);
+        console.error('Error loading hosts:', err);
       },
     });
   }
 
-  toggleApproval(id: string): void {
-    const host = this.Host.find((h) => h._id === id);
+  toggleApproval(hostId: string): void {
+    const host = this.Host.find((h) => h._id === hostId);
     if (host) {
       const newApprovalStatus = !host.approved;
-      console.log('Approval status before change:', host.approved);
-      console.log('New approval status:', newApprovalStatus);
-
-      this.updateApprovalInDatabase(id, newApprovalStatus);
+      this.HostApi.updateHostApproval(hostId, newApprovalStatus).subscribe({
+        next: (response) => {
+          host.approved = newApprovalStatus; // Update local state
+          console.log(
+            `Host approval updated. ID: ${hostId}, Status: ${newApprovalStatus}`
+          );
+        },
+        error: (err) => {
+          console.error('Error updating approval status:', err);
+        },
+      });
     }
   }
-
-  updateApprovalInDatabase(id: string, approved: boolean): void {
-    this.HostApi.updateHostApproval(id, approved).subscribe({
-      next: (response) => {
-        console.log(`Updated Host ID: ${id}, New approval status: ${approved}`);
-        // Update the local data after successful API call
-        const updatedHost = this.Host.find((h) => h._id === id);
-        if (updatedHost) {
-          updatedHost.approved = approved;
-        }
-      },
-      error: (err) => {
-        console.error('Error updating approval status', err);
-      },
-    });
-  }
-  
 }
