@@ -50,12 +50,45 @@
       </div>
     </div>
   </div>
-  <div class="col-md-12 mt-2 mt-md-4">
+  <div class="col-md-6 mt-2 mt-md-4">
     <div class="card rounded-4 p-4">
       <div class="card-body">
-        <p class="fw-bold fs-5">Members Distribution</p>
+        <p class="fw-bold fs-5">Visitor Analytics</p>
         <div style="height: 250px">
-          <canvas #canvas></canvas>
+          <canvas #deviceChart></canvas>
+        </div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Device Type</th>
+                <th>Number of Visitors</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let stat of deviceStats">
+                <td>
+                  <i
+                    class="bi bi-{{
+                      stat._id === 'desktop' ? 'pc-display' : 'tablet'
+                    }} text-primary me-2"
+                  ></i>
+                  {{ stat._id }}
+                </td>
+                <td>{{ stat.count }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 mt-2 mt-md-4">
+    <div class="card rounded-4 p-4">
+      <div class="card-body">
+        <p class="fw-bold fs-5">Earnings Distribution</p>
+        <div style="height: 250px">
+          <canvas #bookingCanvas></canvas>
         </div>
       </div>
     </div>

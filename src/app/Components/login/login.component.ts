@@ -18,7 +18,11 @@ export class LoginComponent implements OnInit {
   email: string = '';
   password: string = '';
   errorMessage: string = '';
+  emailError: string = '';
+  passwordError: string = '';
   isUserLoggedIn: boolean = false;
+  showPassword: boolean = false;
+
   constructor(
     private loginService: LoginService,
     private router: Router,
@@ -30,23 +34,51 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
+    this.emailError = '';
+    this.passwordError = '';
+    this.errorMessage = '';
+
+    if (!this.email) {
+      this.emailError = 'Email is required';
+      return;
+    }
+    if (!this.password) {
+      this.passwordError = 'Password is required';
+      return;
+    }
+
     this.loginService.login(this.email, this.password).subscribe(
       (response) => {
         if (response && response.token) {
-          const decodedToken = this.jwtService.decodeToken(response.token);
-          if (decodedToken.role === 'admin') {
-            localStorage.setItem('token', response.token);
-            this.router.navigate(['/dashboard']);
-            this.isUserLoggedIn = true;
-          } else {
-            this.errorMessage = 'Access denied. You are not authorized.';
-            console.log('Invalid response structure:', response);
+          try {
+            const decodedToken = this.jwtService.decodeToken(response.token);
+            if (decodedToken && decodedToken.role === 'admin') {
+              localStorage.setItem('token', response.token);
+              this.router.navigate(['/dashboard']);
+              this.isUserLoggedIn = true;
+            } else {
+              this.errorMessage = 'Access denied. You are not authorized.';
+            }
+          } catch (error) {
+            console.error('Token decode error:', error);
+            this.errorMessage = 'Authentication failed. Please try again.';
           }
+        } else {
+          this.errorMessage = 'Invalid response from server.';
+          console.log('Invalid response structure:', response);
         }
       },
       (error) => {
-        this.errorMessage = 'Access denied.';
+        if (error.status === 401) {
+          this.errorMessage = 'Invalid email or password';
+        } else {
+          this.errorMessage = 'Access denied.';
+        }
       }
     );
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 }

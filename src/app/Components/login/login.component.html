@@ -21,25 +21,46 @@
                   name="email"
                   required
                 />
+                <div *ngIf="emailError" class="text-danger mt-1 small">
+                  {{ emailError }}
+                </div>
               </div>
               <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  [(ngModel)]="password"
-                  name="password"
-                  required
-                />
+                <div class="input-group">
+                  <input
+                    [type]="showPassword ? 'text' : 'password'"
+                    class="form-control"
+                    id="password"
+                    [(ngModel)]="password"
+                    name="password"
+                    required
+                  />
+                  <button
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    (click)="togglePasswordVisibility()"
+                  >
+                    <i
+                      [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"
+                    ></i>
+                  </button>
+                </div>
+                <div *ngIf="passwordError" class="text-danger mt-1 small">
+                  {{ passwordError }}
+                </div>
+              </div>
+              <div
+                *ngIf="errorMessage"
+                class="alert alert-danger mt-3"
+                role="alert"
+              >
+                {{ errorMessage }}
               </div>
               <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-primary">Login</button>
               </div>
             </form>
-            <div *ngIf="errorMessage" class="alert alert-danger mt-3">
-              {{ errorMessage }}
-            </div>
           </div>
         </div>
       </div>
