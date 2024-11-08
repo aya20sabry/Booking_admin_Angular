@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-11 col-md-12">
     <div class="card rounded-4 p-4">
       <div class="card-body">
         <p class="fw-bold fs-5">Owner Balance</p>
@@ -9,8 +9,7 @@
               <tr>
                 <th>Owner</th>
                 <th>Current Balance</th>
-                <th>Total Paid</th>
-                <th>total_earned</th>
+                <th>Total Earned</th>
               </tr>
             </thead>
             <tbody *ngIf="ownerBalance.length > 0">
@@ -20,7 +19,7 @@
                   {{ balanceOwners[i].lastName }}
                 </td>
                 <td>{{ Math.round(balance.current_balance) }}</td>
-                <td>{{ Math.round(balance.total_paid) }}</td>
+
                 <td>{{ Math.round(balance.total_earned) }}</td>
               </tr>
             </tbody>

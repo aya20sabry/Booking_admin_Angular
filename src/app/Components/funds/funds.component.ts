@@ -102,14 +102,6 @@ export class FundsComponent implements OnInit, OnDestroy {
     });
   }
 
-  createPayoutOrder() {
-    this.paypalService.createPayout({
-      amount: 100,
-      paypalEmail: 'test@test.com',
-      payoutRequestId: '123',
-    });
-  }
-
   private showNotification() {
     if (
       this.notification?.type === 'PAYOUT_REQUEST' &&
@@ -142,6 +134,7 @@ export class FundsComponent implements OnInit, OnDestroy {
               response.batch_header.payout_batch_id,
               payout
             );
+            console.log(payout.amount);
           } else {
             console.error('Invalid PayPal payout response:', response);
             payout.isLoading = false;
@@ -188,29 +181,74 @@ export class FundsComponent implements OnInit, OnDestroy {
   }
 
   private updatePayoutAndBalance(payout: PayoutRequest) {
-    this.payoutService
-      .updatePayoutRequest(payout._id, {
-        status: 'PAID',
-        payment_date: new Date(),
-      })
-      .subscribe(() => {
-        payout.isLoading = false;
-        const ownerBalance = this.ownerBalance.find(
-          (b) => b.owner_id === payout.owner_id
-        );
-        if (ownerBalance) {
+    // First, get the latest balance to ensure we have current data
+    this.ownerBalanceService.getAllBalances().subscribe((latestBalances) => {
+      const currentBalance = latestBalances.find(
+        (b) => b.owner_id === payout.owner_id
+      );
+
+      if (!currentBalance) {
+        console.error('Could not find current balance for owner');
+        return;
+      }
+
+      // Update payout status first
+      this.payoutService
+        .updatePayoutRequest(payout._id, {
+          status: 'PAID',
+          payment_date: new Date(),
+        })
+        .subscribe(() => {
+          payout.isLoading = false;
+
+          // Then update the balance with the latest data
+          const updatedBalance = {
+            current_balance: currentBalance.current_balance - payout.amount,
+            total_paid: currentBalance.total_paid + payout.amount,
+          };
+
+          console.log('Current total_paid:', currentBalance.total_paid);
+          console.log('Payout amount to add:', payout.amount);
+          console.log('Expected new total:', updatedBalance.total_paid);
+
+          // Single update operation
           this.ownerBalanceService
-            .updateBalance(payout.owner_id, {
-              current_balance: ownerBalance.current_balance - payout.amount,
-              total_paid: ownerBalance.total_paid + payout.amount,
-            })
-            .subscribe(() => {
-              this.getOwnerBalance();
-              this.getAllPayoutRequests();
-              this.showSuccessAlert();
+            .updateBalance(payout.owner_id, updatedBalance)
+            .subscribe({
+              next: () => {
+                // Verify the update
+                this.ownerBalanceService
+                  .getAllBalances()
+                  .subscribe((finalBalances) => {
+                    const finalBalance = finalBalances.find(
+                      (b) => b.owner_id === payout.owner_id
+                    );
+                    console.log(
+                      'Updated total_paid after operation:',
+                      finalBalance?.total_paid
+                    );
+
+                    if (
+                      finalBalance?.total_paid !== updatedBalance.total_paid
+                    ) {
+                      console.error('Balance mismatch detected!', {
+                        expected: updatedBalance.total_paid,
+                        actual: finalBalance?.total_paid,
+                      });
+                    }
+                  });
+
+                this.getOwnerBalance();
+                this.getAllPayoutRequests();
+                this.showSuccessAlert();
+              },
+              error: (error) => {
+                console.error('Error updating balance:', error);
+                payout.isLoading = false;
+              },
             });
-        }
-      });
+        });
+    });
   }
 
   private showSuccessAlert() {
