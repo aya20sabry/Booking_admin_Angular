@@ -28,13 +28,18 @@ export class LoginService {
       .pipe(map((response) => ({ token: response as string })));
   }
   get isUserLoggedIn(): boolean {
-    return localStorage.getItem('token') !== null;
+    if (typeof localStorage !== 'undefined') {
+      return localStorage.getItem('token') !== null;
+    }
+    return false;
   }
   getUserStatus() {
     return this.userLog.asObservable;
   }
   logout() {
-    localStorage.removeItem('token');
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('token');
+    }
     this.userLog.next(false);
   }
 }

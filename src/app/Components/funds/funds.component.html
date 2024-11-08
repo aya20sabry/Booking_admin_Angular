@@ -16,8 +16,8 @@
             <tbody *ngIf="ownerBalance.length > 0">
               <tr *ngFor="let balance of ownerBalance; let i = index">
                 <td>
-                  {{ balanceOwners[i]?.firstName }}
-                  {{ balanceOwners[i]?.lastName }}
+                  {{ balanceOwners[i].firstName }}
+                  {{ balanceOwners[i].lastName }}
                 </td>
                 <td>{{ Math.round(balance.current_balance) }}</td>
                 <td>{{ Math.round(balance.total_paid) }}</td>
@@ -47,8 +47,8 @@
             <tbody *ngIf="payoutRequests.length > 0">
               <tr *ngFor="let payout of payoutRequests; let i = index">
                 <td>
-                  {{ payoutOwners[i]?.firstName }}
-                  {{ payoutOwners[i]?.lastName }}
+                  {{ payoutOwners[i].firstName }}
+                  {{ payoutOwners[i].lastName }}
                 </td>
                 <td>{{ payout.payment_reference }}</td>
                 <td>{{ Math.round(payout.amount) }}</td>
